@@ -1,30 +1,39 @@
 # netrecon
 
-Smart LAN va SSH ma'lumot olish (reconnaissance) uchun mo'ljallangan vosita. U mahalliy tarmoqdagi faol qurilmalarni topish, SSH xizmatlarini aniqlash, OS ko'rsatkichlarini baholash va potentsial VM/ko'priklangan hostlarni aniqlash imkonini beradi.
+<p align="center">
+  <img src="https://img.shields.io/badge/Language-Python%20%2F%20Bash-blue" alt="Language" />
+  <img src="https://img.shields.io/badge/Platform-Linux-8A2BE2" alt="Platform" />
+  <img src="https://img.shields.io/badge/Use-Local%20Network%20Recon-red" alt="Use" />
+</p>
 
-Repository description:
-"Smart LAN & SSH reconnaissance toolkit for live host discovery and SSH security checks."
+`netrecon` — bu mahalliy tarmoqdagi faol qurilmalarni, SSH xizmatlarini, qurilma tipini taxmin qilish va potentsial VM/bridged hostlarni aniqlash uchun mo‘ljallangan LAN va SSH skanerlash vositasi.
 
-## Umumiy ma'lumot
+Loyiha ichida bir xil funksionalni qo‘llovchi ikki versiya mavjud:
 
-Ushbu repositoriyada bir xil tarmoq skanerlash vositasining ikkita versiyasi mavjud:
+- `netrecon.py` — Python asosidagi versiya, ko‘p ipli skaner, JSON eksporti va yanada batafsil tahlil imkoniyatlari bilan
+- `netrecon.sh` — Bash asosidagi versiya, tezkor ishlash va shell muhitida qulay foydalanish uchun optimallashtirilgan
 
-- `netrecon.py` — Python asosidagi versiya, ko'p ipli skanerlash, JSON eksporti va kengroq tahlil imkoniyatlari bilan
-- `netrecon.sh` — Bash asosidagi versiya, shell muhitida tezkor ishlatish uchun optimallashtirilgan
+## Asosiy funktsiyalar
 
-Ikkala skript ham mahalliy subnetdagi faol hostlarni aniqlash, SSH portlarini tekshirish, bannerlar o'qish, TTL orqali operatsion tizim turini taxmin qilish va duplikat MAC manzillarini aniqlash uchun ishlatiladi. Bu holatlar ko'pincha bridged VM yoki boshqa tarmoqdagi takroriy qurilmalarni ko'rsatadi.
+- Mahalliy subnetdagi faol hostlarni avtomatik aniqlash
+- `nmap` yordamida tarmoqni skanerlash
+- SSH portlarini tekshirish (`22`, `2222`, `22222`)
+- SSH bannerlarini o‘qib xizmat versiyasi va ma’lumotni aniqlash
+- TTL bo‘yicha operatsion tizim turini taxmin qilish
+- Reverse DNS / Avahi orqali host nomini aniqlash
+- Duplikat MAC manzillarini aniqlash orqali VM yoki bridged qurilmalarni ko‘rsatish
+- Natijalarni terminalda ko‘rinadigan shaklda chiqarish
+- Batafsil ma’lumotni JSON faylga eksport qilish (`scan_report.json`)
 
-## Skriptlar nima qiladi
+## Nima uchun kerak?
 
-- Avtomatik tarzda mahalliy tarmoq subnetini aniqlaydi
-- `nmap` yordamida faol hostlarni qidiradi
-- SSH portlarini skanerlaydi (`22`, `2222`, `22222`)
-- SSH bannerlarini o'qib xizmat versiyalarini aniqlaydi
-- Ping TTL bo'yicha OS turini taxmin qiladi (Linux/Unix, Windows, Router)
-- Reverse DNS / Avahi orqali host nomlarini aniqlashga harakat qiladi
-- Duplikat MAC aniqlash orqali potentsial bridged VM muhitlarini ko'rsatadi
-- Natijalarni terminalda xulosali ko'rinishda chiqaradi
-- Batafsil natijalarni JSON faylga (`scan_report.json` standart nom) eksport qiladi
+Ushbu vosita quyidagi vazifalar uchun foydali:
+
+- LAN ichidagi faol qurilmalarni aniqlash
+- SSH xizmatlarini tekshirish
+- Tizimlar va qurilmalar haqida qisman taxminiy ma’lumot olish
+- Tarmoqni sinovdan o‘tkazish va lab muhitida tekshirish
+- Mudofaa maqsadidagi tarmoq tadqiqotlari
 
 ## Repozitoriy strukturasi
 
@@ -33,34 +42,27 @@ netrecon/
 ├── netrecon.py
 ├── netrecon.sh
 ├── README.md
-└── scan_report.json   # Python versiyasi ishlaganda yaratiladi
+├── scan_report.json    # Python versiyasi ishlaganda yaratilib chiqadi
+└── requirements.txt    # agar keyinchalik qo'shilsa
 ```
 
 ## Talablar
 
-Skriptlar root huquqlarini talab qiladi, chunki ular ARP/MAC aniqlash va mahalliy tarmoqga kirish imkoniyatlariga bog'liq.
+Skriptlar root huquqlarini talab qiladi, chunki ular ARP/MAC ma’lumotlarini va mahalliy tarmoqga kirishni ishlatadi.
 
-Kerakli shartlar:
+Kerakli dasturlar:
 
 - Linux asosidagi tizim
-- `sudo` / root kirishi
+- `sudo` yoki root kirishi
 - `nmap`
-- `ip` buyrug'i (odatda `iproute2` paketidan)
+- `ip` buyrug‘i (`iproute2` odatda shu paketda bo‘ladi)
 - `ping`
 - Python 3 (Python versiyasi uchun)
 - Bash (Bash versiyasi uchun)
 
-## Python versiyasi (`netrecon.py`)
+## Tez boshlash
 
-### Xususiyatlar
-
-- Ko'p ipli host tekshiruvi
-- Avtomatik subnet aniqlash
-- ANSI rangli terminal chiqishi
-- JSON hisobot eksporti
-- Kengroq host tahlili va tasnifi
-
-### Foydalanish
+### 1) Python versiyasi
 
 ```bash
 sudo python3 netrecon.py --help
@@ -69,26 +71,7 @@ sudo python3 netrecon.py --all
 sudo python3 netrecon.py -o custom_report.json
 ```
 
-### Misol chiqishi
-
-- Faol hostlar ro'yxati
-- SSH ochiq/berkitilgan holat
-- MAC va vendor ma'lumotlari
-- TTL bo'yicha OS aniqlash
-- Potentsial Kali/Debian/Linux nomzodlari
-- Bridged VM ko'rsatkichlari
-
-## Bash versiyasi (`netrecon.sh`)
-
-### Xususiyatlar
-
-- Yengil shell implementatsiyasi
-- Route jadvalidan avtomatik subnet aniqlash
-- Tez `nmap` asosidagi kashf etish va filtrlash
-- Hostlarni taglash va ballar bilan baholash logikasi
-- Tezkor mahalliy tarmoq baholash uchun qulay natijalar
-
-### Foydalanish
+### 2) Bash versiyasi
 
 ```bash
 sudo bash netrecon.sh
@@ -96,44 +79,68 @@ sudo bash netrecon.sh -a
 sudo bash netrecon.sh -s 192.168.1.0/24
 ```
 
-### Flaglar
+## Flaglar va parametrlari
 
-- `-a, --all` — yopiq SSH xizmatlari bo'lgan barcha hostlarni ham ko'rsatadi
-- `-s, --subnet` — maxsus subnetni majburlab belgilash
+### Python versiyasi (`netrecon.py`)
+
+- `-s, --subnet` — maxsus subnetni ko‘rsatish
+- `--all` — barcha hostlarni (hatto SSH yopiq bo‘lganlarni ham) ko‘rsatish
+- `-o, --output` — JSON natijalarini saqlash fayli
+- `--help` — buyruqlar haqida ma’lumot
+
+### Bash versiyasi (`netrecon.sh`)
+
+- `-a, --all` — barcha hostlarni qamrab olish
+- `-s, --subnet` — maxsus subnetni belgilash
+
+## Misol natija
+
+```text
+[+] Active hosts discovered:
+192.168.1.10   SSH Open   Linux   00:11:22:33:44:55
+192.168.1.15   SSH Closed  Windows  66:77:88:99:AA:BB
+192.168.1.20   SSH Open   Router   00:AA:BB:CC:DD:EE
+
+[+] Duplicate MACs detected: possible bridged/VM environment
+```
 
 ## Xavfsizlik va etika
 
-Ushbu loyiha quyidagi maqsadlarda ishlatilishi uchun mo'ljallangan:
+Ushbu loyiha faqat quyidagi holatlar uchun mo‘ljallangan:
 
 - ruxsat berilgan ichki tarmoq baholashlari
-- laboratoriya sinovlari
-- ta'lim maqsadlari
-- mudofaa maqsadli xavfsizlik tadqiqotlari
+- laboratoriya muhitidagi sinovlar
+- ta’lim maqsadlari
+- mudofaa ustuvorlikdagi tarmoq xavfsizligi tadqiqotlari
 
-Agar sizga tegishli bo'lmagan tarmoqlar yoki qurilmalar ustida unday skriptlarni ishlatmang. Avvalo ruxsat olish kerak.
+Muhim: ushbu vositani sizga tegishli bo‘lmagan tarmoqlar yoki qurilmalar ustida ishlatmang. Har doim egadan yozma ruxsat oling.
 
 ## Eslatmalar
 
-- Skriptlar asosan mahalliy tarmoqlar va LAN muhitlari uchun mos keladi.
-- Natijalar firewall qoidalari, tarmoq segmentatsiyasi va host konfiguratsiyasiga qarab farq qilishi mumkin.
-- Band tarmoqlarda to'liq ko'rinishga erishish uchun `--all` yoki kattaroq skanerlash oynalaridan foydalaning.
+- Skriptlar asosan LAN va mahalliy tarmoqlar uchun mos keladi.
+- Natijalar firewall qoidalari, segmentatsiya, optimizatsiya va host konfiguratsiyasiga qarab farq qilishi mumkin.
+- Band tarmoqlarda to‘liq ko‘rinishni olish uchun `--all` yoki kengroq skanerlash parametrlaridan foydalaning.
 
 ## Muallif / loyiha haqida
 
-Ushbu repositoriyada bir xil konsepsiyaning ikki turdagi amaliyoti birlashtirilgan: mahalliy tarmoqda erishilgan qurilmalarni va SSH yoqilgan hostlarni aniqlash uchun tez skaner. Python versiyasi ko'proq keng tahlil hamda JSON xabarlarni taqdim etadi, Bash versiyasi esa tez va qulay CLI ishlatish uchun mo'ljallangan.
+Ushbu repozitoriyada bir xil kontseptsiya bo‘yicha ikkita amalga oshirish qo‘shilgan: mahalliy tarmoqda faol qurilmalarni aniqlash va SSH xizmatlari mavjudligini tekshirish. Python versiyasi ko‘proq batafsil tahlil va JSON hisobotlarini ishlab chiqadi, Bash versiyasi esa tez va qulay CLI ishlatish uchun yaratilgan.
 
 ## Litsenziya
 
-Ushbu loyiha hozircha litsenziya bayonini e'lon qilmagan. Agar siz uni ommaga tarqatmoqchi bo'lsangiz, MIT, GPL yoki Apache 2.0 kabi mos open-source litsenziyalarni qo'shishni ko'rib chiqing.
+Hozircha loyiha uchun aniq litsenziya mavjud emas. Agar loyiha ommaga ochiq tarzda taqdim etilsa, quyidagi litsenziyalardan birini qo‘shishni tavsiya qilamiz:
 
-## Taklif etilayotgan keyingi yaxshilanishlar
+- MIT
+- GPL
+- Apache 2.0
 
-- Ma'lum portlar yoki vendor nomlari bo'yicha buyruq satri filtrini qo'shish
-- CSV eksportini qo'shish
-- IPv6 va zamonaviy tarmoq sozlamalari uchun host aniqlashni yaxshilash
-- `nmap -A` yordamida ixtiyoriy service fingerprinting qo'shish
-- Ko'proq OS oilalari va tarmoq qurilmalari uchun aniqlashni kengaytirish
-- Bog'liq dependency'lar uchun kichik o'rnatish skriptini yaratish
+## Taklif etilayotgan yaxshilanishlar
+
+- Portlar bo‘yicha filtrlarni qo‘shish
+- CSV eksportini qo‘shish
+- IPv6 va zamonaviy tarmoq konfiguratsiyalarini qo‘llab-quvvatlash
+- `nmap -A` bilan batafsil xizmat identifikatsiyasi
+- Ko‘proq operatsion tizim turlarini aniqlash
+- O‘rnatish uchun kichik install skriptini tayyorlash
 
 ---
 
