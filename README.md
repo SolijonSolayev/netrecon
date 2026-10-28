@@ -1,66 +1,66 @@
 # netrecon
 
-Smart LAN & SSH reconnaissance toolkit for discovering live devices, open SSH services, OS hints, and potential VM/bridged hosts on a local network.
+Smart LAN va SSH ma'lumot olish (reconnaissance) uchun mo'ljallangan vosita. U mahalliy tarmoqdagi faol qurilmalarni topish, SSH xizmatlarini aniqlash, OS ko'rsatkichlarini baholash va potentsial VM/ko'priklangan hostlarni aniqlash imkonini beradi.
 
 Repository description:
 "Smart LAN & SSH reconnaissance toolkit for live host discovery and SSH security checks."
 
-## Overview
+## Umumiy ma'lumot
 
-This repository contains two versions of the same network reconnaissance tool:
+Ushbu repositoriyada bir xil tarmoq skanerlash vositasining ikkita versiyasi mavjud:
 
-- `netrecon.py` — Python implementation with threaded scanning, JSON export, and richer analytics
-- `netrecon.sh` — Bash implementation optimized for quick CLI usage in shell environments
+- `netrecon.py` — Python asosidagi versiya, ko'p ipli skanerlash, JSON eksporti va kengroq tahlil imkoniyatlari bilan
+- `netrecon.sh` — Bash asosidagi versiya, shell muhitida tezkor ishlatish uchun optimallashtirilgan
 
-Both tools are designed to detect active hosts on the local subnet, identify SSH ports, inspect banners, estimate operating system type via TTL, and flag duplicate MAC addresses that often indicate bridged virtual machines.
+Ikkala skript ham mahalliy subnetdagi faol hostlarni aniqlash, SSH portlarini tekshirish, bannerlar o'qish, TTL orqali operatsion tizim turini taxmin qilish va duplikat MAC manzillarini aniqlash uchun ishlatiladi. Bu holatlar ko'pincha bridged VM yoki boshqa tarmoqdagi takroriy qurilmalarni ko'rsatadi.
 
-## What the scripts do
+## Skriptlar nima qiladi
 
-- Detect the active local network subnet automatically
-- Find live hosts in the network using `nmap`
-- Scan for SSH ports (`22`, `2222`, `22222`)
-- Read SSH banners and identify service versions
-- Estimate OS family (Linux/Unix, Windows, Router) via ping TTL
-- Resolve hostnames with reverse DNS / Avahi where available
-- Highlight possible bridged VM environments using duplicate MAC detection
-- Display summarized results in the terminal
-- Export detailed results to JSON (`scan_report.json` by default)
+- Avtomatik tarzda mahalliy tarmoq subnetini aniqlaydi
+- `nmap` yordamida faol hostlarni qidiradi
+- SSH portlarini skanerlaydi (`22`, `2222`, `22222`)
+- SSH bannerlarini o'qib xizmat versiyalarini aniqlaydi
+- Ping TTL bo'yicha OS turini taxmin qiladi (Linux/Unix, Windows, Router)
+- Reverse DNS / Avahi orqali host nomlarini aniqlashga harakat qiladi
+- Duplikat MAC aniqlash orqali potentsial bridged VM muhitlarini ko'rsatadi
+- Natijalarni terminalda xulosali ko'rinishda chiqaradi
+- Batafsil natijalarni JSON faylga (`scan_report.json` standart nom) eksport qiladi
 
-## Repository structure
+## Repozitoriy strukturasi
 
 ```text
 netrecon/
 ├── netrecon.py
 ├── netrecon.sh
 ├── README.md
-└── scan_report.json   # generated when running the Python version
+└── scan_report.json   # Python versiyasi ishlaganda yaratiladi
 ```
 
-## Requirements
+## Talablar
 
-The scripts require root privileges because they rely on ARP/MAC detection and local network access.
+Skriptlar root huquqlarini talab qiladi, chunki ular ARP/MAC aniqlash va mahalliy tarmoqga kirish imkoniyatlariga bog'liq.
 
-Prerequisites:
+Kerakli shartlar:
 
-- Linux-based system
-- `sudo` / root access
+- Linux asosidagi tizim
+- `sudo` / root kirishi
 - `nmap`
-- `ip` command (typically from `iproute2`)
+- `ip` buyrug'i (odatda `iproute2` paketidan)
 - `ping`
-- Python 3 (for the Python version)
-- Bash (for the Bash version)
+- Python 3 (Python versiyasi uchun)
+- Bash (Bash versiyasi uchun)
 
-## Python version (`netrecon.py`)
+## Python versiyasi (`netrecon.py`)
 
-### Features
+### Xususiyatlar
 
-- Multi-threaded host inspection
-- Automatic subnet detection
-- ANSI colorized terminal output
-- JSON report export
-- More detailed host analysis and classification
+- Ko'p ipli host tekshiruvi
+- Avtomatik subnet aniqlash
+- ANSI rangli terminal chiqishi
+- JSON hisobot eksporti
+- Kengroq host tahlili va tasnifi
 
-### Usage
+### Foydalanish
 
 ```bash
 sudo python3 netrecon.py --help
@@ -69,26 +69,26 @@ sudo python3 netrecon.py --all
 sudo python3 netrecon.py -o custom_report.json
 ```
 
-### Example output
+### Misol chiqishi
 
-- Live host listing
-- SSH open/closed status
-- MAC + vendor information
-- OS detection by TTL
-- Potential Kali/Debian/Linux candidates
-- Bridged VM hints
+- Faol hostlar ro'yxati
+- SSH ochiq/berkitilgan holat
+- MAC va vendor ma'lumotlari
+- TTL bo'yicha OS aniqlash
+- Potentsial Kali/Debian/Linux nomzodlari
+- Bridged VM ko'rsatkichlari
 
-## Bash version (`netrecon.sh`)
+## Bash versiyasi (`netrecon.sh`)
 
-### Features
+### Xususiyatlar
 
-- Lightweight shell implementation
-- Automatic subnet discovery from route table
-- Fast `nmap` based discovery and filtering
-- Host tagging and scoring logic
-- Human-friendly output for quick local assessments
+- Yengil shell implementatsiyasi
+- Route jadvalidan avtomatik subnet aniqlash
+- Tez `nmap` asosidagi kashf etish va filtrlash
+- Hostlarni taglash va ballar bilan baholash logikasi
+- Tezkor mahalliy tarmoq baholash uchun qulay natijalar
 
-### Usage
+### Foydalanish
 
 ```bash
 sudo bash netrecon.sh
@@ -96,45 +96,45 @@ sudo bash netrecon.sh -a
 sudo bash netrecon.sh -s 192.168.1.0/24
 ```
 
-### Flags
+### Flaglar
 
-- `-a, --all` — show all hosts, including closed SSH devices
-- `-s, --subnet` — force a custom subnet
+- `-a, --all` — yopiq SSH xizmatlari bo'lgan barcha hostlarni ham ko'rsatadi
+- `-s, --subnet` — maxsus subnetni majburlab belgilash
 
-## Security and ethical use
+## Xavfsizlik va etika
 
-This project is intended for:
+Ushbu loyiha quyidagi maqsadlarda ishlatilishi uchun mo'ljallangan:
 
-- authorized internal network assessments
-- lab testing
-- educational purposes
-- defensive security research
+- ruxsat berilgan ichki tarmoq baholashlari
+- laboratoriya sinovlari
+- ta'lim maqsadlari
+- mudofaa maqsadli xavfsizlik tadqiqotlari
 
-Do not run it against networks or devices you do not own or do not have explicit permission to test.
+Agar sizga tegishli bo'lmagan tarmoqlar yoki qurilmalar ustida unday skriptlarni ishlatmang. Avvalo ruxsat olish kerak.
 
-## Notes
+## Eslatmalar
 
-- The scripts are best suited for local networks and LAN environments.
-- Results may vary depending on firewall rules, network segmentation, and host configuration.
-- For full scanning visibility in busy networks, use `--all` or larger scan windows when appropriate.
+- Skriptlar asosan mahalliy tarmoqlar va LAN muhitlari uchun mos keladi.
+- Natijalar firewall qoidalari, tarmoq segmentatsiyasi va host konfiguratsiyasiga qarab farq qilishi mumkin.
+- Band tarmoqlarda to'liq ko'rinishga erishish uchun `--all` yoki kattaroq skanerlash oynalaridan foydalaning.
 
-## Author / project context
+## Muallif / loyiha haqida
 
-This repository combines two implementations of the same concept: a fast reconnaissance utility for identifying reachable devices and SSH-enabled hosts on a local network. The Python version is more feature-rich and suitable for automation and JSON reporting, while the shell version is simpler and faster to run from a terminal.
+Ushbu repositoriyada bir xil konsepsiyaning ikki turdagi amaliyoti birlashtirilgan: mahalliy tarmoqda erishilgan qurilmalarni va SSH yoqilgan hostlarni aniqlash uchun tez skaner. Python versiyasi ko'proq keng tahlil hamda JSON xabarlarni taqdim etadi, Bash versiyasi esa tez va qulay CLI ishlatish uchun mo'ljallangan.
 
-## License
+## Litsenziya
 
-This project does not currently declare a license. If you plan to distribute or publish it publicly, consider adding an appropriate open-source license such as MIT, GPL, or Apache 2.0.
+Ushbu loyiha hozircha litsenziya bayonini e'lon qilmagan. Agar siz uni ommaga tarqatmoqchi bo'lsangiz, MIT, GPL yoki Apache 2.0 kabi mos open-source litsenziyalarni qo'shishni ko'rib chiqing.
 
-## Suggested next improvements
+## Taklif etilayotgan keyingi yaxshilanishlar
 
-- Add command-line filtering for specific ports or vendor names
-- Add CSV export support
-- Improve host detection for IPv6 and modern network setups
-- Add optional service fingerprinting using `nmap -A`
-- Add detection for more OS families and network appliances
-- Create a small install script for dependencies
+- Ma'lum portlar yoki vendor nomlari bo'yicha buyruq satri filtrini qo'shish
+- CSV eksportini qo'shish
+- IPv6 va zamonaviy tarmoq sozlamalari uchun host aniqlashni yaxshilash
+- `nmap -A` yordamida ixtiyoriy service fingerprinting qo'shish
+- Ko'proq OS oilalari va tarmoq qurilmalari uchun aniqlashni kengaytirish
+- Bog'liq dependency'lar uchun kichik o'rnatish skriptini yaratish
 
 ---
 
-This README was prepared based on the code in both `netrecon.py` and `netrecon.sh`.
+Ushbu README fayl `netrecon.py` va `netrecon.sh` kodlari asosida tayyorlandi.
